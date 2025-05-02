@@ -1,0 +1,57 @@
+   <div class="message">
+      <p id="editFormMessage"></p>
+   </div>
+
+   <div class="add">
+      <form id="editForm">
+         <div class="text">
+            <input name="title" value="{{data.title}}" type="text" placeholder="Your Title *" required>
+            <textarea name="content" placeholder="Your Content *" required>{{data.content}}</textarea>
+            <input name="name" value="{{data.name}}" type="text" placeholder="Your Name *" required>
+            <input type="password" value="{{data._id}}" name="id" style="display: none;">
+         </div>
+
+         <div class="button">
+            <button type="submit">
+               <i class="fa-solid fa-plus"></i>
+            </button>
+            <label for="file">
+               <i class="fa-solid fa-image"></i>
+            </label>
+            <input name="file" type="file" id="file" style="display: none;"> 
+         </div>
+      </form>
+   </div>
+
+<script>
+   const editForm = document.getElementById('editForm')
+   const editFormMessage = document.getElementById('editFormMessage')
+
+   const clearMessageForeditForm = () => {
+      setTimeout(() => {
+         editFormMessage.innerHTML = ''
+      }, 1000 * 8)
+   }
+
+   editForm.addEventListener('submit', (e) => {
+      e.preventDefault()
+
+      const formData = new FormData(e.target)
+
+      fetch('/edit', {
+         method: 'post',
+         body: formData
+      }).then(response => response.json()
+      ).then(res => {
+         if (res.case) {
+            editFormMessage.style.color = '#A5DD9B';
+            editFormMessage.innerHTML = res.message
+         }
+         else {
+            editFormMessage.style.color = '#FF9B9B';
+            editFormMessage.innerHTML = res.message
+         }
+         clearMessageForeditForm()
+      })
+   })
+</script>

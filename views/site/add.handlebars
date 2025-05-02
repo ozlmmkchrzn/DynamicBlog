@@ -1,0 +1,56 @@
+   <div class="message">
+      <p id="addFromMessage"></p>
+   </div>
+
+   <div class="add">
+      <form id="addFrom">
+         <div class="text">
+            <input name="title" type="text" placeholder="Your Title *" required>
+            <textarea name="content" placeholder="Your Content *" required></textarea>
+            <input name="name" type="text" placeholder="Your Name *" required>
+         </div>
+
+         <div class="button">
+            <button type="submit">
+               <i class="fa-solid fa-plus"></i>
+            </button>
+            <label for="file">
+               <i class="fa-solid fa-image"></i>
+            </label>
+            <input name="file" type="file" id="file" style="display: none;"> 
+         </div>
+      </form>
+   </div>
+
+<script>
+   const addFrom = document.getElementById('addFrom')
+   const addFromMessage = document.getElementById('addFromMessage')
+
+   const clearMessageForaddFrom = () => {
+      setTimeout(() => {
+         addFromMessage.innerHTML = ''
+      }, 1000 * 8)
+   }
+
+   addFrom.addEventListener('submit', (e) => {
+      e.preventDefault()
+
+      const formData = new FormData(e.target)
+
+      fetch('/add', {
+         method: 'post',
+         body: formData
+      }).then(response => response.json()
+      ).then(res => {
+         if (res.case) {
+            addFromMessage.style.color = '#A5DD9B';
+            addFromMessage.innerHTML = res.message
+         }
+         else {
+            addFromMessage.style.color = '#FF9B9B';
+            addFromMessage.innerHTML = res.message
+         }
+         clearMessageForaddFrom()
+      })
+   })
+</script>

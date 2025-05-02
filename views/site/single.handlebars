@@ -1,0 +1,62 @@
+<div class="single">
+    <div class="wrapper">
+        <div class="singleHeader">
+            <h2>
+                {{singleData.title}}
+
+                {{#if user}}
+                <div class="button">
+                    <button id="editButton">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button id="deleteButton">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                </div>
+                {{/if}}
+            </h2>
+
+        </div>
+
+        <img src="{{singleData.file}}">
+        <p>
+            {{singleData.content}}
+        </p>
+
+        <div class="authorAndDate">
+            <span>{{singleData.name}}</span>
+            <span>{{singleData.date}}</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const deleteButton = document.getElementById('deleteButton')
+    const editButton = document.getElementById('editButton')
+
+    //silme işlemi
+    deleteButton.addEventListener('click', () => {
+        let url = window.location.href
+        id = url.split('single/')[1]
+
+        fetch(`/single/${id}`, {
+            method: 'delete',
+        }).then(response => response.json())
+            .then((res) => {
+                if (res.case) {
+                    setTimeout(() => {
+                        window.location.href = '/'
+                    }, 1000 * 4)
+                }
+            })
+    })
+
+    //güncelleme işlemi
+    editButton.addEventListener('click', () => {
+        let url = window.location.href
+        let id = url.split('single/')[1]
+
+        window.location.href = `/edit/${id}`
+
+    })
+</script>
